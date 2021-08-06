@@ -2,11 +2,14 @@ package com.bignerdranch.android.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +19,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var questionTextView: TextView
 
+    private var questionsGiven: Int = 0
+    private var score: Int = 0
+
+    private var currentIndex = 0
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
@@ -24,8 +31,6 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true)
     )
-
-    private var currentIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,20 +63,53 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
     }
 
+    /** Update current question */
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val currentQuestion = questionBank[currentIndex]
+        val questionTextResId = currentQuestion.textResId
         questionTextView.setText(questionTextResId)
+        enableDisableBtns(currentQuestion)
     }
 
+    /**
+     * Check if answer provided is correct
+     * @param userAnswer User's answer (true/false)
+     */
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
-
+        //Find current question
+        val currentQuestion = questionBank[currentIndex]
+        //Find correct answer
+        val correctAnswer = currentQuestion.answer
+        //Set question as answered
+        currentQuestion.answered = true
+        questionsGiven ++
+        //Disabled buttons
+        enableDisableBtns(currentQuestion)
+        //Get string depending on correct/incorrect answer
         val messageResId = if (userAnswer == correctAnswer) {
+            score++
             R.string.correct_toast
         } else {
             R.string.incorrect_toast
         }
-
+        //Display Toast
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+        //If user answered all questions
+        if(questionsGiven == questionBank.size){
+            //Display message with score
+            val percentage = score * 100 / questionsGiven
+            val toastString = getString(R.string.score_toast, percentage)
+            Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    /**
+     * Enable or Disable true/false buttons
+     * @param currentQuestion The current question displayed
+     */
+    private fun enableDisableBtns(currentQuestion: Question){
+        trueButton.isEnabled = !currentQuestion.answered
+        falseButton.isEnabled = !currentQuestion.answered
     }
 }
