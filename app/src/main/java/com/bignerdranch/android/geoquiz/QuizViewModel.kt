@@ -10,7 +10,6 @@ class QuizViewModel: ViewModel() {
     var questionsGiven = 0
     var score = 0
     var currentIndex = 0
-    //var isCheater = false
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
