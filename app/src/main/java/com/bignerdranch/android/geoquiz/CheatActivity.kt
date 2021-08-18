@@ -17,6 +17,12 @@ private const val KEY_ANSWER_SHOWN = "answerIsShown"
 private const val EXTRA_ANSWER_IS_TRUE = "com.bignerdranch.android.geoquiz.answer_is_true"
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown"
 
+/**
+ *  Class that represents the activity that allows user to cheat and see correct answer
+ *
+ * @author Federico Rusconi
+ *
+ */
 class CheatActivity : AppCompatActivity() {
 
     var answerIsTrue = false
@@ -31,20 +37,20 @@ class CheatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cheat)
-
+        //Check if answer is being shown
         val answerIsShown = savedInstanceState?.getBoolean(KEY_ANSWER_SHOWN, false) ?: false
         cheatViewModel.answerIsShown = answerIsShown
-
+        //Get current question's answer
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
-
+        //Find buttons and text field
         showAnswerButton = findViewById(R.id.show_answer_button)
         answerTextView = findViewById(R.id.answer_text_view)
-
+        //Button listener
         showAnswerButton.setOnClickListener {
             cheatViewModel.answerIsShown = true
             getAnswerText()
         }
-
+        //If answer is being shown, display text
         if(cheatViewModel.answerIsShown){
             getAnswerText()
         }
@@ -68,7 +74,7 @@ class CheatActivity : AppCompatActivity() {
     }
 
     /**
-     * Set intent for activity manager setting answer has shown (cheated)
+     * Set intent for activity manager setting if answer has shown (cheated)
      */
     private fun setAnswerShownResult(){
         val data = Intent().apply {

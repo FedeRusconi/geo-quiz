@@ -5,6 +5,13 @@ import androidx.lifecycle.ViewModel
 
 private const val TAG = "QuizViewModel"
 
+/**
+ *  Class that represents the ViewModel for the Main activity
+ *  This class is used maintain the activity's state when configurations change (e.g. rotate)
+ *
+ * @author Federico Rusconi
+ *
+ */
 class QuizViewModel: ViewModel() {
 
     var questionsGiven = 0

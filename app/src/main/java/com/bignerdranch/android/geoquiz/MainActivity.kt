@@ -15,8 +15,13 @@ import androidx.lifecycle.ViewModelProviders
 
 private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
-//private const val REQUEST_CODE_CHEAT = 0
 
+/**
+ *  Class that represents the Main view of the app, where the questions are displayed
+ *
+ * @author Federico Rusconi
+ *
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var trueButton: Button
@@ -45,16 +50,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Get index of current selected question
         val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
         quizViewModel.currentIndex = currentIndex
-
+        //Set elements
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
         prevButton = findViewById(R.id.prev_button)
         cheatButton = findViewById(R.id.cheat_button)
         questionTextView = findViewById((R.id.question_text_view))
-
+        //Set listeners
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
         }
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
     }
 
-    /** Update current question */
+    /** Update current question displayed */
     private fun updateQuestion() {
         val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
