@@ -8,9 +8,7 @@ import androidx.annotation.StringRes
  * @author Federico Rusconi
  *
  */
-data class Question(@StringRes val textResId: Int, val answer: Boolean) {
-
-    var answered: Boolean = false
-    var cheated: Boolean = false
-
-}
+data class Question(@StringRes val textResId: Int,
+                    val answer: Boolean,
+                    var answered: Boolean = false,
+                    var cheated: Boolean = false)
